@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E. Sanjay — Flutter & Frontend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #07090F;
+    --surface:   #0E1420;
+    --card:      #131C2B;
+    --border:    #1D2B3E;
+    --amber:     #F59E0B;
+    --amber-glow:rgba(245,158,11,0.12);
+    --amber-dim: rgba(245,158,11,0.08);
+    --violet:    #818CF8;
+    --green:     #34D399;
+    --red:       #F87171;
+    --text:      #ECF0F8;
+    --muted:     #5A6A88;
+    --subtle:    #8B9AB5;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ──────────────────────────────── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    background: rgba(7,9,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+  }
+
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--amber); }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--amber); }
+
+  /* ─── HERO ─────────────────────────────── */
+  .hero {
+    min-height: calc(100vh - 56px);
+    display: flex;
+    align-items: center;
+    padding: 80px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(129,140,248,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(129,140,248,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .hero-glow-1 {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 65%);
+    top: -200px;
+    right: -150px;
+    pointer-events: none;
+  }
+
+  .hero-glow-2 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,140,248,0.05) 0%, transparent 65%);
+    bottom: -100px;
+    left: -100px;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 1px solid rgba(52,211,153,0.25);
+    background: rgba(52,211,153,0.06);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 24px;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+  }
+
+  .hero-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(46px, 6.5vw, 78px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+  }
+
+  .hero-name span { color: var(--amber); }
+
+  .hero-role {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 400;
+    color: var(--subtle);
+    margin-bottom: 22px;
+    min-height: 36px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.15em;
+    background: var(--amber);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  .hero-bio {
+    color: var(--muted);
+    font-size: 15.5px;
+    max-width: 480px;
+    margin-bottom: 36px;
+    line-height: 1.75;
+  }
+
+  .hero-bio strong { color: var(--subtle); font-weight: 500; }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-amber {
+    padding: 11px 28px;
+    background: var(--amber);
+    color: #050709;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+  }
+
+  .btn-amber:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(245,158,11,0.28);
+  }
+
+  .btn-outline {
+    padding: 11px 28px;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--amber);
+    background: var(--amber-dim);
+  }
+
+  /* ─── TERMINAL ──────────────────────────── */
+  .terminal {
+    background: #080D14;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+  }
+
+  .term-bar {
+    background: #0D1520;
+    padding: 13px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FEBC2E; }
+  .dot-g { background: #28C840; }
+  .term-title { font-size: 12px; color: var(--muted); margin-left: 8px; }
+
+  .term-body {
+    padding: 22px 20px;
+    line-height: 2;
+    min-height: 300px;
+  }
+
+  .tl { display: flex; gap: 10px; }
+  .t-prompt { color: var(--green); }
+  .t-cmd    { color: var(--text); }
+  .t-out    { color: var(--subtle); padding-left: 18px; line-height: 1.8; }
+  .t-blank  { height: 6px; }
+  .t-key    { color: var(--amber); }
+  .t-val    { color: var(--violet); }
+
+  .t-badge {
+    display: inline-block;
+    padding: 1px 9px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin: 0 3px;
+  }
+  .tb-fl { background: rgba(129,140,248,0.15); color: var(--violet); }
+  .tb-am { background: rgba(245,158,11,0.13); color: var(--amber); }
+  .tb-gn { background: rgba(52,211,153,0.12); color: var(--green); }
+  .tb-rd { background: rgba(248,113,113,0.12); color: var(--red); }
+
+  /* ─── SHARED SECTION WRAPPER ────────────── */
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 96px 24px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-h {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 52px;
+    line-height: 1.1;
+  }
+
+  /* ─── PROJECTS ──────────────────────────── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+  }
+
+  .pcard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pcard::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(245,158,11,0.04), transparent 60%);
+    pointer-events: none;
+  }
+
+  .pcard:hover {
+    border-color: rgba(245,158,11,0.45);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+
+  .pcard-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .pcard-icon { font-size: 26px; }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    padding: 3px 11px;
+    border-radius: 99px;
+    border: 1px solid;
+  }
+
+  .badge-live    { color: var(--green); border-color: rgba(52,211,153,0.3);  background: rgba(52,211,153,0.07); }
+  .badge-wip     { color: var(--amber); border-color: rgba(245,158,11,0.3);  background: var(--amber-dim); }
+  .badge-shipped { color: var(--violet);border-color: rgba(129,140,248,0.3); background: rgba(129,140,248,0.07); }
+  .badge-work    { color: var(--red);   border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.07); }
+
+  .pcard-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .pcard-desc {
+    color: var(--subtle);
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .ptags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ptag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── STACK ─────────────────────────────── */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    gap: 12px;
+  }
+
+  .sitem {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 12px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .sitem:hover {
+    border-color: var(--violet);
+    transform: translateY(-3px);
+  }
+
+  .sitem-emoji { font-size: 22px; display: block; margin-bottom: 8px; }
+
+  .sitem-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--subtle);
+    display: block;
+  }
+
+  /* ─── IDEAS ─────────────────────────────── */
+  .ideas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .idea {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 12px 12px 0;
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+
+  .idea:hover { border-color: var(--amber); }
+
+  .idea-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    padding-top: 2px;
+  }
+
+  .idea-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .idea-desc {
+    color: var(--subtle);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  /* ─── CERT STRIP ─────────────────────────── */
+  .cert-strip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 24px;
+    width: fit-content;
+    margin-top: 28px;
+  }
+
+  .cert-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .cert-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .cert-issuer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ─── FOOTER ─────────────────────────────── */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 56px 24px;
+    text-align: center;
+  }
+
+  .footer-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .footer-sub {
+    color: var(--muted);
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 28px;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .flink {
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--subtle);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+
+  .flink:hover { border-color: var(--amber); color: var(--amber); }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────── */
+  @media (max-width: 820px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+    .terminal   { display: none; }
+    .nav-links  { display: none; }
+  }
+
+  @media (max-width: 520px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    .stack-grid    { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">E.<span>Sanjay</span></a>
+  <ul class="nav-links">
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#stack">stack</a></li>
+    <li><a href="#ideas">ideas</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div>
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        Open to internships & freelance
+      </div>
+
+      <h1 class="hero-name">E.<span>Sanjay</span></h1>
+      <p class="hero-role" id="role-el"><span class="cursor"></span></p>
+
+      <p class="hero-bio">
+        2nd year CS engineer at <strong>KPR Institute, Coimbatore</strong>. I build real products — mobile apps, AI tools, and full-stack platforms. Currently shipping <strong>FieldCam</strong> to production and taking Flutter freelance work on Upwork.
+      </p>
+
+      <div class="hero-cta">
+        <a href="https://github.com/sanjaycoder48" class="btn-amber" target="_blank">View GitHub →</a>
+        <a href="https://www.linkedin.com/in/e-sanjay-154886356" class="btn-outline" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+
+    <!-- TERMINAL (right) -->
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="term-title">sanjay@dev ~ zsh</span>
+      </div>
+      <div class="term-body" id="term-body"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+<div class="wrap">
+  <p class="eyebrow">// what I've built</p>
+  <h2 class="section-h">Projects</h2>
+
+  <div class="projects-grid">
+
+    <div class="pcard">
+      <div class="pcard-head">
+        <span class="pcard-icon">📸</span>
+        <span class="badge badge-wip">WIP → Releasing</span>
+      </div>
+      <h3 class="pcard-name">FieldCam</h3>
+      <p class="pcard-desc">Field documentation & project management platform. Engineers capture site photos, annotate, and track project progress in real-time. Near production-ready with Riverpod 3 + deep-link routing.</p>
+      <div class="ptags">
+        <span class="ptag">Flutter</span>
+        <span class="ptag">SvelteKit</span>
+        <span class="ptag">Firebase</span>
+        <span class="ptag">Riverpod 3</span>
+        <span class="ptag">go_router</span>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-head">
+        <span class="pcard-icon">🏫</span>
+        <span class="badge badge-shipped">Shipped</span>
+      </div>
+      <h3 class="pcard-name">CampusCare</h3>
+      <p class="pcard-desc">Smart campus grievance management system. Students submit and track complaints across hostel, academics, and infrastructure categories. Prepared a full IEEE Academic Innovation Proposal for this.</p>
+      <div class="ptags">
+        <span class="ptag">Flutter</span>
+        <span class="ptag">Firebase</span>
+        <span class="ptag">Dart</span>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-head">
+        <span class="pcard-icon">💡</span>
+        <span class="badge badge-work">Work Project</span>
+      </div>
+      <h3 class="pcard-name">OLP Field Service App</h3>
+      <p class="pcard-desc">Production mobile app for an outdoor lighting franchise company. Handles field job assignments, technician tracking, and service reporting. My first real client deployment.</p>
+      <div class="ptags">
+        <span class="ptag">Flutter</span>
+        <span class="ptag">REST API</span>
+        <span class="ptag">Riverpod</span>
+        <span class="ptag">go_router</span>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-head">
+        <span class="pcard-icon">🤖</span>
+        <span class="badge badge-shipped">Shipped</span>
+      </div>
+      <h3 class="pcard-name">Flowi AI</h3>
+      <p class="pcard-desc">AI-powered automation tool — one of several AI experiments on my GitHub. Built to explore workflow automation with LLM APIs and a React frontend.</p>
+      <div class="ptags">
+        <span class="ptag">Python</span>
+        <span class="ptag">FastAPI</span>
+        <span class="ptag">React</span>
+        <span class="ptag">AI / LLM</span>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-head">
+        <span class="pcard-icon">🎯</span>
+        <span class="badge badge-shipped">SIH Build</span>
+      </div>
+      <h3 class="pcard-name">Internship Recommendation Engine</h3>
+      <p class="pcard-desc">AI-powered platform matching students to internships based on skills, interests, and profile. Built for Smart India Hackathon — won 5th place & ₹5,000 at Innovsense 2026.</p>
+      <div class="ptags">
+        <span class="ptag">Python</span>
+        <span class="ptag">ML</span>
+        <span class="ptag">FastAPI</span>
+        <span class="ptag">React</span>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-head">
+        <span class="pcard-icon">💬</span>
+        <span class="badge badge-shipped">Shipped</span>
+      </div>
+      <h3 class="pcard-name">ChatterPit</h3>
+      <p class="pcard-desc">Real-time chat application with modern UI. Built to explore WebSockets, real-time DB sync, and full-stack architecture. One of my earlier full-stack deep-dives.</p>
+      <div class="ptags">
+        <span class="ptag">Node.js</span>
+        <span class="ptag">Socket.io</span>
+        <span class="ptag">MongoDB</span>
+        <span class="ptag">React</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- STACK -->
+<section id="stack">
+<div class="wrap">
+  <p class="eyebrow">// tools of the trade</p>
+  <h2 class="section-h">Tech Stack</h2>
+
+  <div class="stack-grid">
+    <div class="sitem"><span class="sitem-emoji">🐦</span><span class="sitem-name">Flutter</span></div>
+    <div class="sitem"><span class="sitem-emoji">🎯</span><span class="sitem-name">Dart</span></div>
+    <div class="sitem"><span class="sitem-emoji">🔥</span><span class="sitem-name">Firebase</span></div>
+    <div class="sitem"><span class="sitem-emoji">⚡</span><span class="sitem-name">SvelteKit</span></div>
+    <div class="sitem"><span class="sitem-emoji">⚛️</span><span class="sitem-name">React</span></div>
+    <div class="sitem"><span class="sitem-emoji">🐍</span><span class="sitem-name">Python</span></div>
+    <div class="sitem"><span class="sitem-emoji">🚀</span><span class="sitem-name">FastAPI</span></div>
+    <div class="sitem"><span class="sitem-emoji">🍃</span><span class="sitem-name">MongoDB</span></div>
+    <div class="sitem"><span class="sitem-emoji">🟢</span><span class="sitem-name">Node.js</span></div>
+    <div class="sitem"><span class="sitem-emoji">🐙</span><span class="sitem-name">GitHub</span></div>
+    <div class="sitem"><span class="sitem-emoji">🎨</span><span class="sitem-name">Figma</span></div>
+    <div class="sitem"><span class="sitem-emoji">🤖</span><span class="sitem-name">Claude API</span></div>
+  </div>
+
+  <!-- Cert strip -->
+  <div class="cert-strip">
+    <div class="cert-icon">🅰️</div>
+    <div>
+      <div class="cert-name">Building with the Claude API</div>
+      <div class="cert-issuer">Anthropic · Issued Jun 2026</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- IDEAS -->
+<section id="ideas">
+<div class="wrap">
+  <p class="eyebrow">// what's next</p>
+  <h2 class="section-h">Ideas & Building Next</h2>
+
+  <div class="ideas-list">
+
+    <div class="idea">
+      <span class="idea-num">01</span>
+      <div>
+        <h3 class="idea-title">FieldCam → Play Store</h3>
+        <p class="idea-desc">Finishing Riverpod 3 AsyncNotifier migrations, go_router deep-link config, app signing, versioning, and Play Store submission. The last mile before it's live in production.</p>
+      </div>
+    </div>
+
+    <div class="idea">
+      <span class="idea-num">02</span>
+      <div>
+        <h3 class="idea-title">AI-powered Flutter Code Reviewer</h3>
+        <p class="idea-desc">A tool that reviews Flutter/Dart code using Claude API — detects anti-patterns, suggests Riverpod best practices, and explains decisions in plain language. Built specifically for mobile devs.</p>
+      </div>
+    </div>
+
+    <div class="idea">
+      <span class="idea-num">03</span>
+      <div>
+        <h3 class="idea-title">Upwork Freelance Presence</h3>
+        <p class="idea-desc">Taking my Flutter + full-stack skills to the freelance market. Goal: first paid client project by end of 2026, building a track record in mobile app development internationally.</p>
+      </div>
+    </div>
+
+    <div class="idea">
+      <span class="idea-num">04</span>
+      <div>
+        <h3 class="idea-title">Dev Blog — Build in Public</h3>
+        <p class="idea-desc">A SvelteKit-powered personal blog documenting what I build, problems I solve, and lessons from shipping real apps. Writing is thinking in public — and it compounds.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <p class="footer-name">E. Sanjay</p>
+  <p class="footer-sub">Flutter Developer · Frontend Engineer · CS @ KPR Institute, Coimbatore</p>
+  <div class="footer-links">
+    <a href="https://github.com/sanjaycoder48" class="flink" target="_blank">github.com/sanjaycoder48</a>
+    <a href="https://www.linkedin.com/in/e-sanjay-154886356" class="flink" target="_blank">linkedin.com/in/e-sanjay</a>
+  </div>
+  <p class="footer-copy">Built from scratch · Coimbatore, Tamil Nadu · 2026</p>
+</footer>
+
+<script>
+  /* ── Typing animation ── */
+  const roles = [
+    'Flutter Developer',
+    'Frontend Engineer',
+    'Mobile App Builder',
+    'Full-Stack Dev',
+    'AI Toolmaker'
+  ];
+
+  let ri = 0, ci = 0, del = false;
+  const el = document.getElementById('role-el');
+
+  (function type() {
+    const cur = roles[ri];
+    el.innerHTML = cur.slice(0, ci) + '<span class="cursor"></span>';
+    if (!del && ci < cur.length)       { ci++; setTimeout(type, 80); }
+    else if (!del && ci === cur.length){ setTimeout(() => { del = true; type(); }, 2200); }
+    else if (del && ci > 0)            { ci--; setTimeout(type, 38); }
+    else { del = false; ri = (ri+1) % roles.length; setTimeout(type, 300); }
+  })();
+
+  /* ── Terminal animation ── */
+  const lines = [
+    { k:'cmd', v:'whoami' },
+    { k:'out', v:'<span class="t-key">E. Sanjay</span> — Flutter & Frontend Dev' },
+    { k:'blank' },
+    { k:'cmd', v:'ls projects/' },
+    { k:'out', v:'<span class="tb-am t-badge">FieldCam</span> <span class="tb-fl t-badge">CampusCare</span> <span class="tb-rd t-badge">OLP App</span> <span class="tb-gn t-badge">FlowiAI</span> <span class="tb-am t-badge">Internship Engine</span>' },
+    { k:'blank' },
+    { k:'cmd', v:'cat stack.json' },
+    { k:'out', v:'{ <span class="t-key">"mobile"</span>: <span class="t-val">"Flutter + Dart + Riverpod"</span>,' },
+    { k:'out', v:'  <span class="t-key">"web"</span>: <span class="t-val">"SvelteKit + React + FastAPI"</span>,' },
+    { k:'out', v:'  <span class="t-key">"db"</span>: <span class="t-val">"Firebase + MongoDB"</span> }' },
+    { k:'blank' },
+    { k:'cmd', v:'git log --oneline -3' },
+    { k:'out', v:'<span class="t-key">a4f9c2b</span> feat: FieldCam deep-link routing done' },
+    { k:'out', v:'<span class="t-key">83dc1e7</span> feat: Riverpod 3 AsyncNotifier migration' },
+    { k:'out', v:'<span class="t-key">c2109ab</span> chore: app signing + Play Store prep' },
+    { k:'blank' },
+    { k:'cmd', v:'echo "open to work"' },
+    { k:'out', v:'<span class="t-key">internships & freelance → </span><span class="t-val">DM me</span>' },
+  ];
+
+  const tb = document.getElementById('term-body');
+  let li = 0;
+
+  function renderLine(line) {
+    const d = document.createElement('div');
+    if (line.k === 'blank') { d.className = 't-blank'; }
+    else if (line.k === 'cmd') {
+      d.className = 'tl';
+      d.innerHTML = `<span class="t-prompt">❯</span><span class="t-cmd">&nbsp;${line.v}</span>`;
+    } else {
+      d.className = 't-out';
+      d.innerHTML = line.v;
+    }
+    tb.appendChild(d);
+  }
+
+  function runTerm() {
+    if (li < lines.length) {
+      renderLine(lines[li]);
+      const delay = lines[li].k === 'cmd' ? 650 : 110;
+      li++;
+      setTimeout(runTerm, delay);
+    }
+  }
+
+  setTimeout(runTerm, 900);
+</script>
+</body>
+</html>
